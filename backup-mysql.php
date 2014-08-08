@@ -45,7 +45,7 @@ foreach($DBNAMES as $dbname){
 	$tables = mysql_list_tables($dbname);
 	while ($cells = mysql_fetch_array($tables)){
 	    $table = $cells[0];
-	    fwrite($f,"DROP TABLE `".$table."`;\n"); 
+	    fwrite($f,"DROP TABLE `".$table."`;\n");
 	    $res = mysql_query("SHOW CREATE TABLE `".$table."`");
 	    if ($res){
 	        $create = mysql_fetch_array($res);
@@ -67,7 +67,7 @@ foreach($DBNAMES as $dbname){
 	// finished
 	fclose($f);
 	echo "MySQL backup of ".$dbname." was successful \n ";
-	
+
 	// put .sql in zip archive
 	createZipFile($name);
 
@@ -75,6 +75,10 @@ foreach($DBNAMES as $dbname){
 		// upload the .zip to ftp
 		require_once "classes/ftp-upload.php";
 		ftpSend("mysql-".$name.".zip");
+	}elseif(METHOD == "ftps"){
+		// upload the .zip to ftp
+		require_once "classes/ftp-upload.php";
+		ftpSend("mysql-".$name.".zip", true);
 	}elseif(METHOD == "email"){
 		// send the .zip file via mail
 		require_once "classes/email-send.php";
@@ -82,7 +86,3 @@ foreach($DBNAMES as $dbname){
 	}
 }
 echo "End MySQL Backup \n ";
-
-
-
-?>

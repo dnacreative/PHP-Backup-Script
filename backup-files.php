@@ -60,16 +60,18 @@ foreach($BACKUPDIRS as $backupInfo){
 	  }
 	  $zip->close();
 	}
-	
+
 	if(METHOD == "ftp"){
 		// upload the .zip to ftp
 		require_once "classes/ftp-upload.php";
 		ftpSend($backupInfo[0].'.zip');
+	}elseif(METHOD == "ftps"){
+		// upload the .zip to ftp
+		require_once "classes/ftp-upload.php";
+		ftpSend($backupInfo[0].'.zip', true);
 	}elseif(METHOD == "email"){
 		// send the .zip file via mail
 		require_once "classes/email-send.php";
 		emailSend($backupInfo[0].'.zip');
 	}
 }
-
-?>
